@@ -1,0 +1,107 @@
+:root{
+    --body-background:#f4f4f9;
+    --btn-primary:#5cabff;
+    --btn-secondary:#f5ecc2;
+    --btn-active:#f3db75;
+    --btn-edit:#ffd700;
+    --btn-completed:#32cd32;
+    --btn-delete:#ff6347;
+
+}
+
+*{
+    box-sizing: border-box;
+}
+
+
+body{
+    margin: 0;
+    padding: 0;
+    background-color: var(--body-background);
+}
+
+.container{
+    background-color: white;
+    max-width: 600px;;
+    margin: 0 auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1 );
+    padding: 20px;
+
+}
+
+h1{
+    text-align: center;
+}
+
+#todoInput{
+    width: 75%;
+    padding: 10px;
+    margin-right: 10px;
+    border-radius: 5px;
+    border: 2px solid #ddd;
+}
+
+
+#addtodo{
+    padding: 10px 20px;
+    background-color: var(--btn-primary);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: white;
+}
+
+
+
+ul{
+    padding: 0;
+    list-style-type: none;
+}
+
+li{
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+li:hover{
+    background-color: #d6dde6;
+}
+
+li:last-child{
+    border-bottom: none;
+}
+
+
+.filterBtn, .editBtn, .deleteBtn, .completedBtn {
+    margin-left: 5px;
+    margin-top: 5px;
+    border: none;
+    padding:8px 15px ;
+    background-color: var(--btn-secondary);
+    cursor: pointer;
+    border-radius:5px;
+    transition:  background-color  .3s;
+}
+
+.completedBtn{
+    background-color: var(--btn-completed);
+}
+
+.deleteBtn{
+    background-color: var(--btn-delete);
+}
+
+.editBtn{
+    background-color: var(--btn-edit);
+}
+
+.filterBtn:hover{
+    background-color:var(--btn-active) ;
+}
+
+.todoItem{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
