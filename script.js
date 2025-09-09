@@ -2,67 +2,114 @@ function loadTodos() {
     // this function will load the todos from the browser
     const todos = localStorage.getItem("todos");
     console.log(todos);
-    return todos ? JSON.parse(todos) : { todolist: [] }; // ✅ use consistent name
+    return todos ? JSON.parse(todos) : { todolist: [] }; 
 }
 
-function addTodoToLocalStorage(todoText) {
+function addTodoToLocalStorage(todo) {
     const todos = loadTodos();
-    todos.todolist.push(todoText); // ✅ same name as above
+    todos.todolist.push(todo); 
     localStorage.setItem("todos", JSON.stringify(todos));
 }
 
-function appendTodoInHtml(todoText) {
-    const taskList = document.getElementById("taskList");
+function appendTodoInHtml(todo) {
+    const taskList=document.getElementById("taskList");
 
-    const todoItem = document.createElement("li");
 
-    const textDiv =document.createElement("div");
+    const todoItem=document.createElement("li");
 
-    textDiv.textContent = todoText;
+    const textDiv=document.createElement("div");
+
+    textDiv.textContent=todo.text;
     todoItem.classList.add("todoItem");
 
     const wrapper=document.createElement("div");
-    wrapper.classList.add("todoButtons")
+    wrapper.classList.add("todoButtons");
 
-    const editBtn=document.createElement("button");
-    editBtn.textContent="EDIT";
-    editBtn.classList.add("editBtn");
+
+    const completedBtn=document.createElement("button");
+    completedBtn.textContent="COMPLETED";
+    completedBtn.classList.add("completedBtn");
 
     const deleteBtn=document.createElement("button");
     deleteBtn.textContent="DELETE";
     deleteBtn.classList.add("deleteBtn");
 
-    const completedBtn=document.createElement("button");
-    completedBtn.textContent="COMPLETED";
-    completedBtn.classList.add("completedBtn");
-    
+    const editBtn=document.createElement("button");
+    editBtn.textContent="EDIT";
+    editBtn.classList.add("editBtn");
 
-    wrapper.appendChild(editBtn);
-    wrapper.appendChild(deleteBtn);
+
     wrapper.appendChild(completedBtn);
+    wrapper.appendChild(deleteBtn);
+    wrapper.appendChild(editBtn);
 
-
-    todoItem.appendChild(textDiv)
+    todoItem.appendChild(textDiv);
     todoItem.appendChild(wrapper);
 
 
+    taskList.appendChild(todoItem);  
 
-    
-    taskList.appendChild(todoItem);
 }
+
+
+function executeFilterAction(event){
+    const element=event.target;
+    const value=element.getAttribute("data-filter");
+    const taskList=document.getElementById("taskList");
+    taskList.innerHTML = '';
+    // Load existing todos
+    const todos = loadTodos();
+
+    if(value==="all"){
+        todos.todolist.forEach((todo) => { 
+        appendTodoInHtml(todo);
+        });
+    }
+
+    else if(value==="pending"){
+        todos.todolist.forEach(todo=>{
+            if(todo.isCompleted===false){
+                appendTodoInHtml(todo);
+            }
+        })
+    }
+    else{//completed
+        todos.todolist.forEach(todo=>{
+            if(todo.isCompleted===true){
+                appendTodoInHtml(todo);
+            }
+        })
+    }
+
+}
+
+
+
 
 document.addEventListener("DOMContentLoaded", () => {
     const todoInput = document.getElementById("todoInput");
     const submitButton = document.getElementById("addtodo");
     const taskList = document.getElementById("taskList");
 
+    const filterBtns=document.getElementsByClassName("filterBtn");
+
+    for(btn of filterBtns){
+        btn.addEventListener("click" , executeFilterAction)
+    }
+
+    // Load existing todos
+    const todos = loadTodos();
+    todos.todolist.forEach((todo) => { 
+        appendTodoInHtml(todo);
+    });
+
     submitButton.addEventListener("click", (event) => {
         const todoText = todoInput.value.trim();
         if (todoText === "") {
             alert("Please write something for todo");
         } else {
-            addTodoToLocalStorage(todoText);
-            appendTodoInHtml(todoText);
+            addTodoToLocalStorage({text:todoText,isCompleted:false});
+            appendTodoInHtml({text:todoText,isCompleted:false});
             todoInput.value = "";
         }
     });
@@ -72,9 +119,5 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log(event.target.value);
     });
 
-    // Load existing todos
-    const todos = loadTodos();
-    todos.todolist.forEach((todo) => { // ✅ fixed here also
-        appendTodoInHtml(todo);
-    });
+    
 });
